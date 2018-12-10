@@ -97,6 +97,10 @@ auto NotifierBuilder::runOnce() -> void
     Event currentEvent = static_cast<Event>(fileSystemEvent->mask);
 
     Notification notification { currentEvent, fileSystemEvent->path, fileSystemEvent->eventTime };
+    
+    if (containsEvent(currentEvent, Event::create) && containsEvent(currentEvent, Event::is_dir)) {
+        mInotify->watchFile(fileSystemEvent->path);
+    }
 
     for (auto& eventAndEventObserver : mEventObserver) {
         auto& event = eventAndEventObserver.first;
