@@ -173,6 +173,16 @@ void Inotify::ignoreFile(fs::path file)
     mIgnoredDirectories.push_back(file.string());
 }
 
+void Inotify::unignoreFile(const fs::path file)
+{
+    for (unsigned i = 0; i < mIgnoredDirectories.size(); ++i) {
+        size_t pos = file.string().find(mIgnoredDirectories[i]);
+        if (pos != std::string::npos) {
+            mIgnoredDirectories.erase(mIgnoredDirectories.begin() + i);
+            return;
+        }
+    }
+}
 
 void Inotify::unwatchFile(fs::path file)
 {

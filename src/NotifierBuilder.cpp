@@ -42,6 +42,12 @@ auto NotifierBuilder::ignoreFile(boost::filesystem::path file) -> NotifierBuilde
     return *this;
 }
 
+auto NotifierBuilder::unignoreFile(boost::filesystem::path file) -> NotifierBuilder&
+{
+    mInotify->unignoreFile(file.string());
+    return *this;
+}
+
 auto NotifierBuilder::onEvent(Event event, EventObserver eventObserver) -> NotifierBuilder&
 {
     mInotify->setEventMask(mInotify->getEventMask() | static_cast<std::uint32_t>(event));
@@ -97,7 +103,7 @@ auto NotifierBuilder::runOnce() -> void
     Event currentEvent = static_cast<Event>(fileSystemEvent->mask);
 
     Notification notification { currentEvent, fileSystemEvent->path, fileSystemEvent->eventTime };
-    
+
     if (containsEvent(currentEvent, Event::create) && containsEvent(currentEvent, Event::is_dir)) {
         mInotify->watchFile(fileSystemEvent->path);
     }

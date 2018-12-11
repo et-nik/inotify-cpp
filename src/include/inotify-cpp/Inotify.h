@@ -80,6 +80,7 @@ class Inotify {
   void unwatchFile(fs::path file);
   void ignoreFileOnce(fs::path file);
   void ignoreFile(fs::path file);
+  void unignoreFile(const fs::path file);
   void setEventMask(uint32_t eventMask);
   uint32_t getEventMask();
   void setEventTimeout(std::chrono::milliseconds eventTimeout, std::function<void(FileSystemEvent)> onEventTimeout);
